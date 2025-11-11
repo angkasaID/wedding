@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan | Jawa Modern</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-modern': '#172554',  
+                        'rose-gold': '#C6915A',    
+                        'putih-krem': '#FDFCFB',  
+                        'bg-modern': '#E2E8F0',    
+                    },
+                    fontFamily: {
+                        'serif-elegant': ['Playfair Display', 'serif'], 
+                        'sans-modern': ['Inter', 'sans-serif'],
+                    },
+                    keyframes: {
+                        pulse_shadow: {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(17, 24, 39, 0.4)' },
+                            '50%': { boxShadow: '0 0 0 10px rgba(17, 24, 39, 0)' },
+                        },
+                    },
+                    animation: {
+                        'pulse-shadow': 'pulse_shadow 2s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+<style>
+    body {
+        overflow: hidden; 
+    }
+
+    #mobile-wrapper {
+        max-width: 500px; 
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 100vh;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        background-color: #FDFCFB; 
+        
+        scroll-snap-type: y mandatory; 
+        height: 100vh;
+        overflow-y: hidden; 
+        scroll-behavior: smooth; 
+        
+        /* padding-bottom diatur ke 0. AKAN DIUBAH OLEH JS JADI 70px */
+        padding-bottom: 0; 
+    }
+
+    .background-modern1 {
+        background-image: url('https://pestaku.id/themes/jawa-biru/bg.webp'); 
+        background-size: cover;
+        background-attachment: fixed; 
+        background-position: center;
+    }
+
+    .satumomen_slide {
+        /* KEMBALI KE 100VH SEBAGAI DEFAULT (UNTUK COVER) */
+        height: 100vh; 
+        position: relative; 
+        overflow: hidden; 
+        scroll-snap-align: start;
+        /* Tambahkan properti flex default untuk sentrasi konten */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* ATURAN BARU: Diterapkan oleh JS ke semua section setelah tombol diklik */
+    .scroll-active-section {
+        height: calc(100vh - 70px); 
+        /* Pastikan sentrasi tetap berlaku */
+        justify-content: center; 
+    }
+
+    .satumomen_slide:not(#cover) {
+        padding-bottom: 0; 
+    }
+    
+    /* Ornamen dan Z-index (seperti sebelumnya) */
+    .ornamen-wayang {
+        position: absolute;
+        pointer-events: none;
+        z-index: 5; 
+        opacity: 0.8; 
+    }
+    .frame-corner {
+        position: absolute;
+        z-index: 6; 
+        opacity: 0.9;
+        width: 35%; 
+        pointer-events: none;
+    }
+
+    .blur-card {
+        position: relative; 
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(20px); 
+        -webkit-backdrop-filter: blur(20px); 
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        overflow: hidden;
+        z-index: 10;
+    }
+
+    .content-layer { 
+        position: relative; 
+        z-index: 12; 
+    }
+
+    /* Animasi Konten */
+    .animated-content { 
+        opacity: 0; 
+        transform: translateY(30px); 
+        transition: opacity 0.7s ease-out, transform 0.7s ease-out; 
+    }
+    .animated-content.is-visible { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+
+    /* Styling Mempelai */
+    .frame-mempelai {
+        background-image: url('/themes/aceh-jawa/frame-jawa.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 300px; 
+        margin: auto;
+    }
+    .image-container {
+        height: 130px;
+        width: 100px;
+        margin: auto;
+        border: 2px solid #C6915A; 
+        border-radius: 50px 50px 0 0;
+        overflow: hidden;
+        transform: translateY(-14px); 
+    }
+</style>
+</head>
+
+<body class="font-sans-modern text-navy-modern">
+
+    <div id="mobile-wrapper" class="background-modern1"> 
+        
+        <div id="cover" class="satumomen_slide satumomen_cover flex flex-col justify-center items-center p-6" data-section="cover">
+            
+            <img class="frame-corner top-0 left-0 animate__animated animate__fadeInTopLeft animate__slower" src="./asset/tl.webp" alt="frame top left">
+            <img class="frame-corner top-0 right-0 animate__animated animate__fadeInTopRight animate__slower" src="./asset/tr.webp" alt="frame top right">
+
+            <div class="ornamen-wayang right-0 bottom-0 w-full md:w-11/12" style="transform: translate(0, 0);">
+                <div class="animate__animated animate__fadeInUp animate__slower">
+                    <img src="./asset/bm.webp" alt="flowers" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[0%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/wayang-l.webp" alt="Wayang Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[20%] translate-y-[23%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/bunga-kiri.webp" alt="Bunga Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[-30%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/wayang-tegak.webp" alt="Wayang Tegak Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[0%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/wayang-r.webp" alt="Wayang Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[-20%] translate-y-[23%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/bunga-kanan.webp" alt="Bunga Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[30%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/wayang-tegak.webp" alt="Wayang Tegak Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+            
+            <div class=" rounded-2xl text-center w-full max-w-sm relative z-20">
+                <div class="content-layer">
+                    <div class="mx-auto animate__animated animate__fadeInDown animate__slower overflow-hidden mb-4" style="width:150px;height:200px;">
+                        <img src="./asset/wayangok.png" class="w-full h-full object-contain" alt="ilustrasi"/>
+                    </div>
+                    
+                    <div class="text-center animate__animated animate__fadeInDown animate__slower">
+                        <div class="text-sm">The Wedding of</div>
+                        <h1 class="text-4xl font-serif-elegant font-bold text-rose-gold tracking-wide mb-4 drop-shadow-sm">Irfan & Indah</h1>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="text-sm mb-2 animated-content">
+                            Kepada Yth;<br/>Bapak/Ibu/Saudara/i
+                        </div>
+                        <div id="guestNameSlot" class="text-lg font-bold mb-4 animated-content">Nama Tamu Undangan</div>
+                        
+                        <button id="open-button" data-target="#mempelai"
+                                class="w-60 px- py-3 bg-navy-modern hover:bg-rose-gold text-white font-semibold rounded-full shadow-lg transition duration-300 animate-pulse-shadow">
+                            <i class="fas fa-envelope-open-text mr-2"></i> Buka Undangan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mempelai" class="satumomen_slide px-6 relative flex flex-col justify-center items-center snap-start" data-section="mempelai" data-section="mempelai">
+            <img class="frame-corner top-0 left-0 animate__animated animate__fadeInTopLeft animate__slower" src="./asset/tl.webp" alt="frame top left">
+            <img class="frame-corner top-0 right-0 animate__animated animate__fadeInTopRight animate__slower" src="./asset/tr.webp" alt="frame top right">
+
+            <div class="ornamen-wayang right-0 bottom-0 w-full md:w-11/12" style="transform: translate(0, 0);">
+                <div class="animate__animated animate__fadeInUp animate__slower">
+                    <img src="./asset/bm.webp" alt="flowers" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[0%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/wayang-l.webp" alt="Wayang Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[20%] translate-y-[23%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/bunga-kiri.webp" alt="Bunga Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang left-0 bottom-0 w-[30%] translate-x-[-30%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomLeft animate__slower">
+                    <img src="./asset/wayang-tegak.webp" alt="Wayang Tegak Kiri" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[0%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/wayang-r.webp" alt="Wayang Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[-20%] translate-y-[23%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/bunga-kanan.webp" alt="Bunga Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+            <div class="ornamen-wayang right-0 bottom-0 w-[30%] translate-x-[30%] translate-y-[31%]">
+                <div class="animate__animated animate__fadeInBottomRight animate__slower">
+                    <img src="./asset/wayang-tegak.webp" alt="Wayang Tegak Kanan" class="w-full" draggable="false">
+                </div>
+            </div>
+
+            <div class=" rounded-xl text-center animated-content w-full max-w-sm">
+                <div class="content-layer">
+                    
+                    <h2 class="text-3xl font-serif-elegant text-navy-modern mb-8 border-b-2 border-rose-gold pb-2 inline-block">Mempelai</h2>
+
+                    <div class="animate__animated animate__fadeInLeft animate__slower">
+                        <div class="frame-mempelai" style="background-image:url('./asset/frame-jawa.png');">
+                            <div class="image-container">
+                                <img src="./asset/pria.webp" style="width: 100%;height: 100%;object-fit: cover;" alt="Foto Pria"/>
+                            </div>
+                        </div>
+                        <div class="text-center mb-4">
+                            <div class="text-2xl font-serif-elegant font-bold text-navy-modern">Nama Pria</div>
+                            <div class="text-sm italic text-gray-600"> Putra dari<br/>
+                                Bapak [Nama Bapak]<br/>&amp;Ibu [Nama Ibu]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center animate__animated animate__fadeIn animate__slower my-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="59.8" 
+                            class="block mx-auto" 
+                            style="overflow:visible;transform: scale(.7);enable-background:new 0 0 50 59.8" 
+                            xml:space="preserve">
+                            <path d="M10.4 54.1c2.6 2.5 5.9 3.8 9.8 3.8 2.7 0 5.1-.6 7.4-1.8 2.3-1.2 3.8-2.6 4.6-4.3.8-1.7 1.2-3.6 1.2-5.7 0-4.2-1.3-7.8-4-10.8-.6-.8-2.1-1.5-4.4-2-1-.3-2-.5-3.2-.6 4-.4 6.5-.2 7.7.5 1.9 1.2 3.4 3 4.6 5.4s2.1 3.6 2.6 3.7l5.2.4c2.6.1 4.5.9 5.7 2.3 1.7 2.1 2.4 5.6 2.2 10.6-1-5.5-2.4-8.5-3.9-9.1-1.6-.6-3-.8-4.2-.8-3 0-5.1 1.7-6.3 5.2-3.3 5.9-8.1 8.8-14.4 8.8-5.3 0-10.2-2-14.5-5.9C2.2 49.9 0 45.3 0 40.2c0-3.2 1.6-6.7 4.9-10.5 3.6-4.2 7.8-6.6 12.6-7.2-3.8-.8-6.8-2.4-9.1-4.9C6.1 15.1 5 12.3 5 9.1c0-2.3 1.1-4.4 3.4-6.3C10.4.9 12.5 0 14.7 0c1 0 2.3.3 4.1 1 2.3.9 3.4 1.9 3.4 3 0 .9-.6 1.4-1.7 1.4-.1 0-.5-.4-1.4-1.3-.8-.8-1.8-1.3-2.9-1.4-1.2-.1-2.4.5-3.6 1.8-1.2 1.4-1.8 2.7-1.8 4.1 0 7.2 5.3 12.1 15.8 14.7 1.4.3 2.1.7 2.1 1.3-1.2-.2-2.5-.3-3.9-.3-5.1 0-9.3 1.1-12.6 3.4-4.2 2.9-6.3 7.2-6.3 13 0 5.9 1.5 10.4 4.5 13.4z" style="fill:#C6915A"></path>
+                        </svg>
+                    </div>
+
+                    <div class="animate__animated animate__fadeInRight animate__slower mt-4">
+                        <div class="frame-mempelai" style="background-image:url('./asset/frame-jawa.png');">
+                            <div class="image-container">
+                                <img src="./asset/wanita.webp" style="width: 100%;height: 100%;object-fit: cover;" alt="Foto Wanita"/>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-serif-elegant font-bold text-navy-modern">Nama Wanita</div>
+                            <div class="text-sm italic text-gray-600">
+                                Putri dari<br/>
+                                Bapak [Nama Bapak]<br/>&amp;Ibu [Nama Ibu]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+<div id="bottom-navbar" 
+         class="fixed bottom-0 left-0 right-0 z-50 
+                py-3 w-full 
+                bg-blue-300 shadow-2xl 
+                transition-transform duration-500 transform translate-y-full hidden" 
+         style="max-width: 500px; margin-left: auto; margin-right: auto;">
+        
+        <div class="flex justify-around text-navy-modern">
+            <a href="#cover" class="text-center py-1 px-2 rounded-lg hover:text-rose-gold transition duration-200">
+                <i class="fas fa-home text-lg"></i>
+                <div class="text-xs font-semibold">Beranda</div>
+            </a>
+            <a href="#mempelai" class="text-center py-1 px-2 rounded-lg hover:text-rose-gold transition duration-200">
+                <i class="fas fa-user-friends text-lg"></i>
+                <div class="text-xs font-semibold">Mempelai</div>
+            </a>
+            <a href="#acara" class="text-center py-1 px-2 rounded-lg hover:text-rose-gold transition duration-200">
+                <i class="fas fa-calendar-alt text-lg"></i>
+                <div class="text-xs font-semibold">Acara</div>
+            </a>
+                        <a href="#acara" class="text-center py-1 px-2 rounded-lg hover:text-rose-gold transition duration-200">
+                <i class="fas fa-calendar-alt text-lg"></i>
+                <div class="text-xs font-semibold">Acara</div>
+            </a>
+                        <a href="#acara" class="text-center py-1 px-2 rounded-lg hover:text-rose-gold transition duration-200">
+                <i class="fas fa-calendar-alt text-lg"></i>
+                <div class="text-xs font-semibold">Acara</div>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Memastikan animasi bekerja saat snap scroll terjadi
+        const observerOptions = {
+            root: document.getElementById('mobile-wrapper'), 
+            rootMargin: '0px',
+            threshold: 0.8
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const section = entry.target;
+                const mobileWrapper = document.getElementById('mobile-wrapper');
+                const bottomNavbar = document.getElementById('bottom-navbar');
+                
+                if (entry.isIntersecting) {
+                    // SECTION MASUK (Snap Selesai)
+                    
+                    // Kelola Navbar
+                    // Logika diubah: Setelah scrolling aktif, navbar akan SELALU muncul, bahkan di cover
+                    if (mobileWrapper.style.overflowY === 'scroll') {
+                        bottomNavbar.classList.remove('hidden', 'translate-y-full'); 
+                    }
+
+                    // Memicu animasi konten (.animated-content)
+                    section.querySelectorAll('.animated-content').forEach(el => {
+                        el.classList.add('is-visible');
+                    });
+                    
+                    // Memicu animasi konten (animate.css)
+                    section.querySelectorAll('.animate__animated').forEach(el => {
+                        const entryAnimation = Array.from(el.classList).find(cls => cls.startsWith('animate__fadeIn') || cls.startsWith('animate__slideIn'));
+                        if (entryAnimation) {
+                            el.classList.remove(entryAnimation);
+                            setTimeout(() => {
+                                el.classList.add(entryAnimation);
+                            }, 50); 
+                        }
+                    });
+
+                } else {
+                    // SECTION KELUAR: Reset animasi
+                    section.querySelectorAll('.animated-content').forEach(el => {
+                        el.classList.remove('is-visible');
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.satumomen_slide').forEach(section => {
+            observer.observe(section);
+        });
+
+        // FUNGSI BUTTON BUKA UNDANGAN (KUNCI UTAMA)
+        document.getElementById('open-button').addEventListener('click', function() {
+            var targetSection = document.getElementById(this.getAttribute('data-target').replace('#', ''));
+            var mobileWrapper = document.getElementById('mobile-wrapper');
+            var openButton = document.getElementById('open-button');
+            var bottomNavbar = document.getElementById('bottom-navbar');
+
+            // 1. KUNCI UTAMA: Aktifkan scrolling
+            mobileWrapper.style.overflowY = 'scroll';
+
+            // 2. Terapkan padding ke wrapper dan kelas penyesuai tinggi ke semua section
+            // Menggunakan 70px untuk paddingBottom, sesuai tinggi navbar tetap (fixed)
+            mobileWrapper.style.paddingBottom = '70px'; 
+            
+            // Terapkan kelas 'scroll-active-section' ke SEMUA section
+            document.querySelectorAll('.satumomen_slide').forEach(section => {
+                section.classList.add('scroll-active-section'); 
+            });
+
+            // 3. Sembunyikan tombol
+            openButton.classList.add('hidden');
+            
+            // 4. Tampilkan Navbar secara inisial
+            bottomNavbar.classList.remove('hidden');
+            setTimeout(() => {
+                bottomNavbar.classList.remove('translate-y-full'); 
+            }, 100);
+
+            // 5. Scroll ke section target
+            if (targetSection) {
+                window.requestAnimationFrame(() => {
+                    mobileWrapper.scrollTo({
+                        top: targetSection.offsetTop,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+        
+    </script>
+</body>
+</html>
