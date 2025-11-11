@@ -41,11 +41,13 @@
 
     <style>
         body {
+            /* Mengatur latar belakang body agar terlihat bagus saat fullscreen di desktop */
+            background-color: #E2E8F0;
             overflow: hidden; 
         }
 
         #mobile-wrapper {
-            max-width: 500px; 
+            max-width: 500px; /* Batasan Lebar Maksimum untuk tampilan Desktop */
             margin-left: auto;
             margin-right: auto;
             min-height: 100vh;
@@ -63,11 +65,17 @@
             padding-bottom: 0; 
         }
 
-        /* Jika mode fullscreen aktif, pastikan wrapper mengambil seluruh ruang */
-        #mobile-wrapper:fullscreen, #mobile-wrapper:-webkit-full-screen, #mobile-wrapper:-moz-full-screen {
-            max-width: none; /* Hilangkan batas max-width */
+        /* PERBAIKAN: Memaksa batasan lebar tetap aktif di mode fullscreen (Masalah 1) */
+        #mobile-wrapper:fullscreen, 
+        #mobile-wrapper:-webkit-full-screen, 
+        #mobile-wrapper:-moz-full-screen,
+        #mobile-wrapper:-ms-fullscreen {
+            max-width: 500px !important; 
             width: 100%;
-            height: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            /* Tambahkan bayangan ekstra agar terlihat jelas dari latar belakang desktop */
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         .background-modern1 {
@@ -372,8 +380,9 @@
         }
 
         // Memastikan animasi bekerja saat snap scroll terjadi
+        const mobileWrapper = document.getElementById('mobile-wrapper');
         const observerOptions = {
-            root: document.getElementById('mobile-wrapper'), 
+            root: mobileWrapper, 
             rootMargin: '0px',
             threshold: 0.8
         };
@@ -381,13 +390,12 @@
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 const section = entry.target;
-                const mobileWrapper = document.getElementById('mobile-wrapper');
                 const bottomNavbar = document.getElementById('bottom-navbar');
                 
                 if (entry.isIntersecting) {
                     // SECTION MASUK (Snap Selesai)
                     
-                    // Kelola Navbar: Setelah scrolling aktif, navbar akan SELALU muncul, bahkan di cover
+                    // Kelola Navbar: Setelah scrolling aktif, navbar akan SELALU muncul
                     if (mobileWrapper.style.overflowY === 'scroll') {
                         bottomNavbar.classList.remove('hidden', 'translate-y-full'); 
                     }
@@ -402,6 +410,7 @@
                         const entryAnimation = Array.from(el.classList).find(cls => cls.startsWith('animate__fadeIn') || cls.startsWith('animate__slideIn'));
                         if (entryAnimation) {
                             el.classList.remove(entryAnimation);
+                            // Menggunakan setTimeout 0ms untuk me-restart animasi CSS
                             setTimeout(() => {
                                 el.classList.add(entryAnimation);
                             }, 50); 
@@ -424,43 +433,43 @@
         // FUNGSI BUTTON BUKA UNDANGAN (KUNCI UTAMA)
         document.getElementById('open-button').addEventListener('click', function() {
             var targetSection = document.getElementById(this.getAttribute('data-target').replace('#', ''));
-            var mobileWrapper = document.getElementById('mobile-wrapper');
             var openButton = document.getElementById('open-button');
             var bottomNavbar = document.getElementById('bottom-navbar');
             
-            // 1. TAMBAHAN BARU: Panggil mode Layar Penuh (Fullscreen)
-            // Ini harus dilakukan sebagai respons langsung dari klik pengguna.
+            // 1. Panggil mode Layar Penuh (Fullscreen)
             launchFullscreen(mobileWrapper); 
 
-            // 2. Aktifkan scrolling
-            mobileWrapper.style.overflowY = 'scroll';
-
-            // 3. Terapkan padding ke wrapper dan kelas penyesuai tinggi ke semua section
-            mobileWrapper.style.paddingBottom = '70px'; 
-            
-            // Terapkan kelas 'scroll-active-section' ke SEMUA section
-            document.querySelectorAll('.satumomen_slide').forEach(section => {
-                section.classList.add('scroll-active-section'); 
-            });
-
-            // 4. Sembunyikan tombol
+            // 4. Sembunyikan tombol segera
             openButton.classList.add('hidden');
             
-            // 5. Tampilkan Navbar secara inisial
-            bottomNavbar.classList.remove('hidden');
+            // 2. Gunakan Timeout untuk memberi waktu pada Fullscreen API menyesuaikan layout (PERBAIKAN MASALAH 2)
             setTimeout(() => {
-                bottomNavbar.classList.remove('translate-y-full'); 
-            }, 100);
+                
+                // 3. Aktifkan scrolling dan sesuaikan dimensi/layout
+                mobileWrapper.style.overflowY = 'scroll';
+                mobileWrapper.style.paddingBottom = '70px'; 
+                
+                // Terapkan kelas 'scroll-active-section' ke SEMUA section untuk mengurangi tinggi
+                document.querySelectorAll('.satumomen_slide').forEach(section => {
+                    section.classList.add('scroll-active-section'); 
+                });
+                
+                // 5. Tampilkan Navbar secara inisial
+                bottomNavbar.classList.remove('hidden');
+                // Timeout untuk transisi navbar
+                setTimeout(() => {
+                    bottomNavbar.classList.remove('translate-y-full'); 
+                }, 50); 
 
-            // 6. Scroll ke section target
-            if (targetSection) {
-                window.requestAnimationFrame(() => {
+                // 6. Scroll ke section target
+                if (targetSection) {
+                    // Menggunakan scroll langsung, bukan requestAnimationFrame, karena timeout sudah memastikan layout stabil
                     mobileWrapper.scrollTo({
                         top: targetSection.offsetTop,
                         behavior: 'smooth'
                     });
-                });
-            }
+                }
+            }, 150); // Delay 150ms harus cukup untuk stabilisasi layout
         });
         
     </script>
