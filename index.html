@@ -166,7 +166,9 @@
             </div>
           </div>
 
-          <div class="rounded-2xl text-center w-full max-w-sm relative z-20">
+          <div
+            class="blur-card rounded-2xl p-8 text-center animated-content w-full max-w-sm"
+          >
             <div class="content-layer">
               <div
                 class="mx-auto animate__animated animate__fadeInDown animate__slower overflow-hidden mb-4"
@@ -344,9 +346,7 @@
             </div>
           </div>
 
-          <div
-            class="blur-card p-8 text-center animated-content w-full max-w-sm"
-          >
+          <div class="p-8 text-center animated-content w-full max-w-sm">
             <div class="content-layer">
               <h2
                 class="text-3xl font-judul text-navy-modern mb-8 border-b-2 border-rose-gold pb-2 inline-block"
@@ -518,9 +518,7 @@
             </div>
           </div>
 
-          <div
-            class="blur-card p-8 text-center animated-content w-full max-w-sm"
-          >
+          <div class="p-8 text-center animated-content w-full max-w-sm">
             <div class="content-layer">
               <div
                 class="animate__animated animate__fadeInLeft animate__slower"
@@ -937,9 +935,7 @@
             </div>
           </div>
 
-          <div
-            class="blur-card p-6 text-center animated-content w-full max-w-sm"
-          >
+          <div class="p-6 text-center animated-content w-full max-w-sm">
             <div class="content-layer space-y-4">
               <h3
                 class="text-xl font-bold font-accent text-navy-modern border-b border-rose-gold pb-2 mb-4 inline-block animate__animated animate__fadeInDown"
@@ -1115,9 +1111,7 @@
             </div>
           </div>
 
-          <div
-            class="blur-card p-6 text-center animated-content w-full max-w-sm"
-          >
+          <div class="p-6 text-center animated-content w-full max-w-sm">
             <div class="content-layer space-y-6">
               <h3
                 class="text-3xl font-judul font-bold text-navy-modern border-b border-rose-gold pb-2 mb-4 inline-block animate__animated animate__fadeInDown"
@@ -1296,9 +1290,7 @@
             </div>
           </div>
 
-          <div
-            class="blur-card p-6 text-center animated-content w-full max-w-sm"
-          >
+          <div class="p-6 text-center animated-content w-full max-w-sm">
             <div class="content-layer space-y-6">
               <h3
                 class="text-3xl font-judul font-bold text-navy-modern border-b border-rose-gold pb-2 mb-4 inline-block animate__animated animate__fadeInDown"
@@ -1687,12 +1679,16 @@
         style="max-width: 500px; margin-left: auto; margin-right: auto"
       >
         <div
+          id="nav-container"
           class="flex flex-nowrap overflow-x-auto whitespace-nowrap justify-start text-navy-modern px-2 no-scrollbar"
         >
+          <!-- Catatan: Kelas 'w-1/5' memastikan hanya 5 item yang terlihat dalam 100% lebar container. 
+             Kelas 'py-1 px-3' bawaan dari kode sebelumnya telah dihapus untuk menghindari konflik. -->
+
           <a
             id="nav-cover"
             href="#cover"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'cover')"
           >
             <i class="fas fa-home text-lg"></i>
@@ -1702,7 +1698,7 @@
           <a
             id="nav-ucapan"
             href="#ucapan"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'ucapan')"
           >
             <i class="fas fa-book-open text-lg"></i>
@@ -1712,7 +1708,7 @@
           <a
             id="nav-mempelai"
             href="#mempelai"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'mempelai')"
           >
             <i class="fas fa-user-friends text-lg"></i>
@@ -1722,7 +1718,7 @@
           <a
             id="nav-acara"
             href="#acara"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'acara')"
           >
             <i class="fas fa-calendar-alt text-lg"></i>
@@ -1730,9 +1726,19 @@
           </a>
 
           <a
+            id="nav-galeri"
+            href="#galeri"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
+            onclick="scrollToSection(event, 'galeri')"
+          >
+            <i class="fas fa-camera text-lg"></i>
+            <div class="text-xs font-semibold">Galeri</div>
+          </a>
+
+          <a
             id="nav-maps-lokasi"
             href="#maps-lokasi"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'maps-lokasi')"
           >
             <i class="fa-solid fa-map-location-dot text-lg"></i>
@@ -1742,7 +1748,7 @@
           <a
             id="nav-gift"
             href="#gift"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'gift')"
           >
             <i class="fa-solid fa-gift text-lg"></i>
@@ -1752,7 +1758,7 @@
           <a
             id="nav-penutup"
             href="#penutup"
-            class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200"
+            class="nav-item w-1/5 text-center rounded-lg transition duration-200"
             onclick="scrollToSection(event, 'penutup')"
           >
             <i class="fas fa-heart text-lg"></i>
