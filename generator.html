@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Undangan Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome (for icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Google Font: Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f4f7f9;
+      }
+      .card {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .btn-primary {
+        background-image: linear-gradient(to right, #d1b09b 0%, #b8987b 100%);
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      .btn-primary:hover {
+        transform: scale(1.02);
+        opacity: 0.9;
+      }
+      .text-accent {
+        color: #d1b09b;
+      }
+
+      /* Utility untuk feedback */
+      .copy-feedback {
+        transition: opacity 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+    <div
+      class="w-full max-w-lg card bg-white p-6 md:p-8 rounded-xl border-t-4 border-accent"
+    >
+      <header class="text-center mb-8">
+        <i class="fas fa-link text-4xl text-accent mb-3"></i>
+        <h1 class="text-3xl font-bold text-gray-800">
+          Pembuat Tautan Undangan
+        </h1>
+        <p class="text-sm text-gray-500 mt-2">
+          Alat untuk membuat tautan undangan spesifik nama tamu.
+        </p>
+      </header>
+
+      <!-- Form Input -->
+      <div class="space-y-6">
+        <!-- Input URL Dasar -->
+        <div>
+          <label
+            for="base-url"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
+            1. URL Dasar (Alamat Undangan Anda)
+          </label>
+          <input
+            type="url"
+            id="base-url"
+            value="https://nama-proyek-anda.vercel.app/"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
+            placeholder="Misal: https://angkasa-bintang.vercel.app/"
+          />
+          <p class="text-xs text-gray-500 mt-1">
+            Ganti dengan domain Anda yang sebenarnya.
+          </p>
+        </div>
+
+        <!-- Input Nama Tamu -->
+        <div>
+          <label
+            for="guest-name"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
+            2. Masukkan Nama Tamu (Satu per satu)
+          </label>
+          <input
+            type="text"
+            id="guest-name"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
+            placeholder="Contoh: Keluarga Besar Budi Wijaya"
+          />
+        </div>
+
+        <!-- Tombol Generate -->
+        <button
+          id="generate-button"
+          class="btn-primary w-full text-white font-semibold py-3 rounded-lg shadow-md transition duration-300"
+        >
+          <i class="fas fa-magic mr-2"></i> Buat Tautan Undangan
+        </button>
+      </div>
+
+      <!-- Hasil -->
+      <div
+        id="result-container"
+        class="mt-8 pt-6 border-t border-gray-200 hidden"
+      >
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">
+          Tautan Siap Disalin:
+        </h2>
+
+        <div class="bg-gray-50 p-4 rounded-lg flex flex-col space-y-3">
+          <!-- Tautan yang Dihasilkan -->
+          <textarea
+            id="generated-link"
+            readonly
+            rows="3"
+            class="w-full text-sm text-blue-700 bg-transparent border-none focus:ring-0 resize-none overflow-hidden"
+            placeholder="Tautan akan muncul di sini..."
+          ></textarea>
+
+          <!-- Tombol Salin -->
+          <button
+            id="copy-button"
+            class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            <i class="fas fa-copy mr-2"></i> Salin Tautan
+          </button>
+
+          <!-- Feedback Salin -->
+          <p
+            id="copy-feedback"
+            class="text-sm text-green-600 text-center copy-feedback opacity-0"
+          >
+            <i class="fas fa-check-circle mr-1"></i> Tautan berhasil disalin ke
+            clipboard!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const baseUrlInput = document.getElementById("base-url");
+        const guestNameInput = document.getElementById("guest-name");
+        const generateButton = document.getElementById("generate-button");
+        const resultContainer = document.getElementById("result-container");
+        const generatedLink = document.getElementById("generated-link");
+        const copyButton = document.getElementById("copy-button");
+        const copyFeedback = document.getElementById("copy-feedback");
+
+        // Set placeholder untuk URL dasar jika belum ada (Opsional: gunakan localStorage)
+        if (!baseUrlInput.value) {
+          baseUrlInput.value = "https://angkasa-bintang.vercel.app/";
+        }
+
+        // Fungsi utama untuk membuat tautan
+        function generateLink() {
+          const baseUrl = baseUrlInput.value.trim().replace(/\/+$/, ""); // Hapus trailing slash
+          const guestName = guestNameInput.value.trim();
+
+          if (!baseUrl || !guestName) {
+            generatedLink.value = "Mohon isi URL Dasar dan Nama Tamu.";
+            resultContainer.classList.remove("hidden");
+            return;
+          }
+
+          // 1. URL Encoding Nama Tamu
+          // encodeURIComponent akan mengubah spasi menjadi %20, dan mengamankan karakter khusus lainnya.
+          const encodedName = encodeURIComponent(guestName);
+
+          // 2. Gabungkan menjadi Tautan Final
+          // Kita gunakan parameter 'to' sesuai dengan logika yang kita buat di file index.html
+          const finalLink = `${baseUrl}/?to=${encodedName}`;
+
+          // Tampilkan hasil
+          generatedLink.value = finalLink;
+          resultContainer.classList.remove("hidden");
+
+          // Reset feedback salin
+          copyFeedback.classList.add("opacity-0");
+        }
+
+        // Listener tombol Generate
+        generateButton.addEventListener("click", generateLink);
+        guestNameInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            generateLink();
+          }
+        });
+
+        // Listener tombol Copy
+        copyButton.addEventListener("click", () => {
+          // Pilih teks di textarea
+          generatedLink.select();
+          generatedLink.setSelectionRange(0, 99999); // Untuk perangkat mobile
+
+          // Gunakan document.execCommand untuk kompatibilitas iframe
+          try {
+            document.execCommand("copy");
+
+            // Feedback visual
+            copyFeedback.classList.remove("opacity-0");
+            setTimeout(() => {
+              copyFeedback.classList.add("opacity-0");
+            }, 2500);
+          } catch (err) {
+            alert("Gagal menyalin tautan. Silakan salin manual.");
+            console.error("Copy command failed:", err);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
