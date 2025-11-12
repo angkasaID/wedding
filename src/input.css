@@ -1,0 +1,410 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=Marcellus&display=swap");
+
+@import "tailwindcss";
+
+/* CUSTOM STYLE HERE */
+
+@layer utilities {
+  .bg-navy-modern {
+    background-color: #3e6692;
+  }
+  .text-navy-modern {
+    color: #172554;
+  }
+  .text-accent {
+    color: #83b2ec;
+  }
+  .bg-rose-gold {
+    background-color: #c6915a;
+  }
+  .text-rose-gold {
+    color: #c6915a;
+  }
+  .bg-putih-krem {
+    background-color: #fdfcfb;
+  }
+  .bg-bg-modern {
+    background-color: #e2e8f0;
+  }
+
+  @keyframes pulse_shadow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(17, 24, 39, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(17, 24, 39, 0);
+    }
+  }
+
+  .animate-pulse-shadow {
+    animation: pulse_shadow 2s infinite;
+  }
+  .font-judul {
+    font-family: "Great Vibes", cursive;
+  }
+  .font-sans-modern {
+    font-family: "Inter", sans-serif;
+  }
+  .font-accent {
+    font-family: "DM Serif Display", serif;
+  }
+}
+
+body {
+  /* Latar belakang body untuk tampilan desktop */
+  overflow: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, dan Opera */
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* ---------------------------------------------------- */
+/* KONTAINER UTAMA BARU: ELEMENT YANG DIMINTA FULLSCREEN */
+/* ---------------------------------------------------- */
+#fullscreen-container {
+  /* Pastikan kontainer ini selalu mengambil 100% viewport */
+  width: 100vw;
+  height: 100vh;
+  position: relative; /* Penting untuk elemen fixed/absolute anak */
+}
+
+/* Ketika kontainer ini fullscreen, child di dalamnya akan terlihat normal */
+#fullscreen-container:fullscreen {
+  /* Hanya perlu memastikan ia mengisi layar penuh tanpa modifikasi layout */
+  display: flex; /* Memastikan #mobile-wrapper dan navbar tersusun dengan baik */
+  justify-content: center; /* Membantu sentrasi */
+  align-items: center; /* Membantu sentrasi */
+}
+
+#mobile-wrapper {
+  max-width: 500px; /* Batasan Lebar Maksimum untuk tampilan Desktop */
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  background-color: #fdfcfb;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding-bottom: 0;
+}
+
+.background-modern1 {
+  background-image: url("/dist/bege/bg.webp");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+.blur-nav {
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.angkasa_slide {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ATURAN BARU: Diterapkan oleh JS ke semua section setelah tombol diklik */
+.scroll-active-section {
+  /* Tinggi dikurangi 70px untuk navbar di bawah */
+  height: calc(100vh - 70px);
+  justify-content: center;
+  padding-bottom: 100px; /* Tambahkan padding bawah agar konten tidak terpotong navbar */
+}
+/* Override untuk section cover yang tidak boleh ada padding bawah */
+#cover.scroll-active-section {
+  padding-bottom: 0px;
+  height: calc(100vh - 70px);
+}
+
+/* Ornamen styling */
+.ornamen-wayang {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.8;
+}
+.frame-corner {
+  position: absolute;
+  z-index: 6;
+  opacity: 0.9;
+  width: 35%;
+  pointer-events: none;
+}
+
+.blur-card {
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.content-layer {
+  position: relative;
+  z-index: 12;
+}
+
+/* Animasi Konten */
+.animated-content {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.animated-content.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Styling Mempelai */
+.frame-mempelai {
+  background-image: url("/dist/bege/frame-jawa.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 300px;
+  margin: auto;
+}
+.image-container {
+  height: 130px;
+  width: 100px;
+  margin: auto;
+  border: 2px solid #c6915a;
+  border-radius: 50px 50px 0 0;
+  overflow: hidden;
+  transform: translateY(-14px);
+}
+
+/* Styling Countdown */
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 65px; /* Lebar tetap */
+  height: 65px; /* Tinggi tetap */
+  background-color: #c6915a; /* rose-gold */
+  color: #fdfcfb; /* putih-krem */
+  border-radius: 8px;
+  font-weight: 700;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-number {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+
+.countdown-label {
+  font-size: 0.65rem;
+  line-height: 1rem;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+*/ .font-accent {
+  font-family: "Playfair Display", serif;
+  /* Asumsi Playfair Display dimuat dari Google Fonts */
+}
+
+.font-latin {
+  font-family: "Roboto", sans-serif;
+}
+
+/* 2. DEFINISI SKEMA WARNA 
+       Berdasarkan tema 'Jawa Biru' dan 'Rose Gold' (color-accent)
+    */
+.color-accent {
+  /* Rose Gold atau warna aksen yang menawan */
+  color: #c6915a; /* Contoh: Warna coklat keemasan/rose gold */
+}
+.text-navy-modern {
+  color: #2d3a50; /* Warna biru gelap / navy modern */
+}
+
+/* 3. STYLING KHUSUS UNTUK TANGGAL & HARI 
+    */
+.p-8 .animate__zoomIn .font-latin {
+  /* Gaya untuk Hari: "Minggu" */
+  font-weight: 500; /* Medium bold */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #2d3a50; /* Warna gelap */
+}
+
+.p-8 .animate__zoomIn .font-accent {
+  /* Gaya untuk Tanggal: "23.06.24" */
+  font-weight: 700; /* Extra bold */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 4. STYLING UNTUK DETAIL PENDUKUNG (Akad/Kediaman)
+    */
+.p-8 .editable {
+  /* Styling umum untuk detail teks kecil */
+  color: #555;
+}
+
+.p-8 .editable.font-weight-bold {
+  /* Styling untuk "✤ Akad Pernikahan ✤" dan "✤ Kediaman Wanita ✤" */
+  font-weight: 700 !important;
+  text-transform: uppercase;
+}
+/* KEYFRAMES UNTUK ORNAMEN */
+
+/* Gerakan 1: Goyang Horizontal (Sway) */
+@keyframes sway {
+  0% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+  100% {
+    transform: rotate(-1.5deg);
+  }
+}
+
+/* Gerakan 2: Goyang Terbalik (Sway Reverse) - Untuk elemen di sisi berlawanan */
+@keyframes sway-reverse {
+  0% {
+    transform: rotate(1.5deg);
+  }
+  50% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes scroll-infinity {
+  0% {
+    transform: translateX(0%); /* Mulai dari posisi awal */
+  }
+  100% {
+    transform: translateX(-15%); /* Geser ke kiri sejauh 5% dari lebar elemen */
+  }
+}
+
+/* Gerakan 3: Mengambang Vertikal (Float) - Untuk memberikan kesan ringan */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* KELAS PENERAPAN */
+
+/* Ornamen Kiri */
+.anim-sway-left {
+  animation: sway 5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.anim-float-left {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Ornamen Kanan */
+.anim-sway-right {
+  animation: sway-reverse 5s ease-in-out infinite;
+  transform-origin: bottom center; /* Penting! */
+}
+.anim-float-right {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Ornamen Bawah Penuh (tanpa rotasi) */
+.anim-scroll-infinity {
+  animation: scroll-infinity 5s linear infinite alternate; /* 60s untuk sangat pelan, linear untuk kecepatan konstan, alternate agar bolak-balik */
+}
+
+/* 1. CONTAINER NAVBAR (Memastikan tinggi yang jelas dan jarak dari atas) */
+#bottom-navbar {
+  padding-top: 0.9rem !important; /* Tailwind: pt-2 */
+  padding-bottom: 1rem !important; /* Tailwind: pb-2 */
+  /* Hapus pt-4 dan py-2/py-3 dari atribut class/style di HTML, gunakan di sini */
+}
+
+/* 3. NAV ITEM (Item Default - Hapus semua padding vertikal yang tidak perlu) */
+.nav-item {
+  /* Padding horizontal tetap ada */
+  padding-left: 0.75rem !important; /* px-3 */
+  padding-right: 0.75rem !important; /* px-3 */
+
+  /* Hapus padding/margin bottom yang sebelumnya menyebabkan masalah */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+
+  /* Penting: Set display ke flex dan align-items ke center */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Memastikan ikon dan teks di tengah */
+  align-items: center;
+
+  /* Warna default */
+  color: #2d3a50;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 4. ACTIVE STATE (Tinggi Penuh) */
+.nav-item.active-nav-style {
+  /* Mengubah warna teks/ikon */
+  color: #c6915a; /* Warna rose-gold Anda */
+}
+
+/* 5. MEMASTIKAN IKON DAN TEKS TERPISAH DENGAN RAPI */
+.nav-item i {
+  margin-bottom: 2px; /* Jarak antara ikon dan teks */
+}
+.nav-item div {
+  line-height: 1; /* Teks kecil */
+}
+.rose-gold {
+  color: #c6915a;
+}
+
+/* KELAS KHUSUS UNTUK BINGKAI PETA */
+.map-with-accent-frame {
+  /* Menerapkan box-shadow sebagai bingkai berwarna */
+  box-shadow: 0 0 0 4px #c6915a; /* Bingkai 4px solid Rose Gold */
+
+  /* Memastikan bingkai (shadow) juga mengikuti kelengkungan sudut */
+  border-radius: 0.5rem;
+
+  /* Tambahkan sedikit transisi untuk estetika */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Opsional: Efek hover untuk bingkai peta */
+.map-with-accent-frame:hover {
+  box-shadow: 0 0 0 6px #c6915a; /* Bingkai sedikit menebal saat di-hover */
+}
+
+/* ... (Pastikan .relative memiliki overflow: hidden) ... */
+.relative {
+  overflow: hidden;
+}
