@@ -8,8 +8,8 @@
   .bg-navy-modern {
     background-color: #3e6692;
   }
-  .text-navy-modern {
-    color: #172554;
+  .text-utama {
+    color: #3e6692;
   }
   .text-accent {
     color: #83b2ec;
@@ -25,6 +25,12 @@
   }
   .bg-bg-modern {
     background-color: #e2e8f0;
+  }
+  .bg-btn-utama {
+    background-color: #3e6692;
+  }
+  .bg-btn-accent {
+    background-color: #83b2ec;
   }
 
   @keyframes pulse_shadow {
