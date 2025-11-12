@@ -2,10 +2,9 @@
 // A. FUNGSI UTILITY (COPY, MODAL)
 // ====================================================================
 
-// FUNGSI COPY TO CLIPBOARD (Diperbarui dari Block 1 & 3: membersihkan spasi/strip)
+// FUNGSI COPY TO CLIPBOARD
 function copyToClipboard(textToCopy, buttonId) {
   const tempInput = document.createElement("input");
-  // Hapus tanda hubung/koma/spasi untuk rekening, biarkan alamat tetap (jika alamat)
   const cleanedText = buttonId.includes("rek")
     ? textToCopy.replace(/[-\s,]/g, "")
     : textToCopy;
@@ -105,7 +104,7 @@ function displayGuestName() {
 }
 
 // ====================================================================
-// B. FUNGSI KONTROL MUSIK
+// C. FUNGSI KONTROL MUSIK
 // ====================================================================
 
 function initializeMusicControl() {
@@ -136,24 +135,21 @@ function initializeMusicControl() {
           updateIcon(true);
         })
         .catch((error) => {
-          // Autoplay diblokir
           console.log("Autoplay diblokir:", error);
-          updateIcon(false); // Pastikan status tetap mute
+          updateIcon(false);
         });
-      // Hapus listener agar hanya dipicu sekali
       document.removeEventListener("click", autoPlayAfterInteraction, true);
     }
   }
 
-  // Pasang listener pada seluruh dokumen untuk interaksi pertama
   document.addEventListener("click", autoPlayAfterInteraction, {
     once: true,
-    capture: true, // Gunakan capture agar dipicu sebelum event di elemen lain
+    capture: true,
   });
 
   // Listener untuk tombol kontrol
   controlButton.addEventListener("click", (e) => {
-    e.stopPropagation(); // Stop propagation agar tidak memicu autoPlayAfterInteraction (jika masih aktif)
+    e.stopPropagation();
     if (music.paused) {
       music
         .play()
@@ -162,7 +158,6 @@ function initializeMusicControl() {
           updateIcon(true);
         })
         .catch((error) => {
-          // Jika gagal (diblokir), beri notifikasi
           alert(
             "Browser memblokir pemutaran otomatis. Silakan cek pengaturan media."
           );
@@ -175,17 +170,15 @@ function initializeMusicControl() {
     }
   });
 
-  // Atur status awal ke MUTE
   updateIcon(false);
 }
 
 // ====================================================================
-// C. FUNGSI SCROLL, NAVIGASI & OBSERVER
+// D. FUNGSI SCROLL, NAVIGASI & OBSERVER
 // ====================================================================
 
 const mobileWrapper = document.getElementById("mobile-wrapper");
 
-// FUNGSI C.1: Centering Nav Item (dari Block 3)
 function centerActiveNavItem(itemId) {
   const navContainer = document.getElementById("nav-container");
   const activeItem = document.getElementById(`nav-${itemId}`);
@@ -203,26 +196,24 @@ function centerActiveNavItem(itemId) {
   });
 }
 
-// FUNGSI C.2: Scroll Manual (diperbarui dari Block 2 & 3)
 function scrollToSection(event, sectionId) {
   event.preventDefault();
   const targetSection = document.getElementById(sectionId);
-  // Memastikan scroll hanya bisa dilakukan setelah undangan dibuka
   if (targetSection && mobileWrapper.style.overflowY === "scroll") {
     mobileWrapper.scrollTo({
       top: targetSection.offsetTop,
       behavior: "smooth",
     });
 
-    // Setelah scroll, langsung set aktif dan center
     updateNavbarActiveState(sectionId);
   }
 }
 window.scrollToSection = scrollToSection;
 
-// FUNGSI C.3: Logika Button Buka Undangan (dari Block 2)
+// Inisialisasi saat DOM siap
 document.addEventListener("DOMContentLoaded", () => {
-  initializeMusicControl(); // Panggil inisialisasi musik
+  displayGuestName(); // Panggil fungsi menampilkan nama tamu
+  initializeMusicControl();
 
   document.getElementById("open-button").addEventListener("click", function () {
     const targetSection = document.getElementById(
@@ -234,32 +225,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const isMobile = window.innerWidth <= 768;
 
-    // 1. Panggil mode Layar Penuh HANYA jika isMobile true
     if (isMobile) {
       launchFullscreen(fullscreenTarget);
     }
 
-    // 2. Sembunyikan tombol segera
     openButton.classList.add("hidden");
 
-    // 3. Gunakan Timeout untuk transisi
     setTimeout(() => {
-      // 4. Aktifkan scrolling dan sesuaikan dimensi/layout
       mobileWrapper.style.overflowY = "scroll";
-      mobileWrapper.style.paddingBottom = "70px"; // Sesuaikan dengan tinggi navbar
+      mobileWrapper.style.paddingBottom = "70px";
 
-      // Tampilkan semua section
       document.querySelectorAll(".angkasa_slide").forEach((section) => {
-        section.classList.add("scroll-active-section"); // Mengatur opacity: 1
+        section.classList.add("scroll-active-section");
       });
 
-      // 5. Tampilkan Navbar
       bottomNavbar.classList.remove("hidden");
       setTimeout(() => {
         bottomNavbar.classList.remove("translate-y-full");
       }, 50);
 
-      // 6. Scroll ke section target
       if (targetSection) {
         mobileWrapper.scrollTo({
           top: targetSection.offsetTop,
@@ -267,13 +251,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // 7. Set 'cover' sebagai aktif inisial
       updateNavbarActiveState("cover");
     }, 200);
   });
 });
 
-// Fungsi pembantu untuk meminta mode layar penuh (Fullscreen API)
 function launchFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -286,54 +268,39 @@ function launchFullscreen(element) {
   }
 }
 
-// FUNGSI C.4: Update Navbar Active State (diperbarui dari Block 2 & 3)
 function updateNavbarActiveState(sectionId) {
-  // 1. Hapus kelas aktif dari semua item
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.classList.remove("active-nav-style");
   });
 
-  // 2. Tambahkan kelas aktif ke item yang sesuai
   const activeLink = document.getElementById(`nav-${sectionId}`);
   if (activeLink) {
     activeLink.classList.add("active-nav-style");
-    // 3. Panggil fungsi pemusatan
     centerActiveNavItem(sectionId);
   }
 }
 
-// FUNGSI C.5: Intersection Observer (dari Block 2, menggunakan root: mobileWrapper)
 const observerOptions = {
-  root: mobileWrapper, // Penting: Menggunakan mobileWrapper sebagai root scroll
+  root: mobileWrapper,
   rootMargin: "0px",
-  threshold: 0.8, // Section dianggap aktif jika 80% terlihat
+  threshold: 0.8,
 };
 
 const observer = new IntersectionObserver((entries, observer) => {
   entries.forEach((entry) => {
     const section = entry.target;
-    const bottomNavbar = document.getElementById("bottom-navbar");
 
     if (entry.isIntersecting) {
-      // TAMPILKAN NAVBAR (Jika sudah dalam mode scroll)
-      if (mobileWrapper.style.overflowY === "scroll") {
-        // Sudah ditangani oleh tombol 'Buka Undangan', jadi cukup update state
-      }
-
-      // Update Active State Navbar
       const sectionId = section.getAttribute("id");
       if (sectionId) {
         updateNavbarActiveState(sectionId);
       }
 
-      // Memicu animasi konten (.animated-content)
       section.querySelectorAll(".animated-content").forEach((el) => {
         el.classList.add("is-visible");
       });
 
-      // Memicu animasi konten (animate.css - walaupun tidak di load, ini adalah logicnya)
       section.querySelectorAll(".animate__animated").forEach((el) => {
-        // Logika re-trigger animasi entrance
         const entryAnimation = Array.from(el.classList).find(
           (cls) =>
             cls.startsWith("animate__fadeIn") ||
@@ -347,7 +314,6 @@ const observer = new IntersectionObserver((entries, observer) => {
         }
       });
     } else {
-      // SECTION KELUAR: Reset animasi (opsional)
       section.querySelectorAll(".animated-content").forEach((el) => {
         el.classList.remove("is-visible");
       });
@@ -355,7 +321,6 @@ const observer = new IntersectionObserver((entries, observer) => {
   });
 }, observerOptions);
 
-// Amati semua section slide setelah DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".angkasa_slide").forEach((section) => {
     observer.observe(section);
