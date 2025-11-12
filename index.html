@@ -45,6 +45,14 @@
             overflow: hidden; 
         }
 
+                .no-scrollbar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, dan Opera */
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
         /* ---------------------------------------------------- */
         /* KONTAINER UTAMA BARU: ELEMENT YANG DIMINTA FULLSCREEN */
         /* ---------------------------------------------------- */
@@ -384,7 +392,14 @@
     Browser Anda tidak mendukung elemen audio.
 </audio>
     <div id="fullscreen-container">
-        
+        <button id="music-control-button" 
+    class="fixed z-[101] 
+           w-12 h-12 rounded-full shadow-lg 
+           bg-rose-gold text-white flex items-center justify-center 
+           transition duration-300 transform scale-100 hover:scale-105"
+    style="bottom: 80px; right: 1rem;">
+    <i id="music-icon" class="fas fa-volume-up text-lg"></i>
+</button>
         <!-- WRAPPER UTAMA KONTEN (MAX 500PX) -->
         <div id="mobile-wrapper" class="background-modern1"> 
             
@@ -1141,7 +1156,7 @@
            rounded-t-2xl" 
     style="max-width: 500px; margin-left: auto; margin-right: auto;">
     
-    <div class="flex flex-nowrap overflow-x-auto whitespace-nowrap justify-start text-navy-modern px-2">
+    <div class="flex flex-nowrap overflow-x-auto whitespace-nowrap justify-start text-navy-modern px-2 no-scrollbar">
         
         <a id="nav-cover" href="#cover" class="nav-item flex-shrink-0 text-center py-1 px-3 rounded-lg transition duration-200" onclick="scrollToSection(event, 'cover')">
             <i class="fas fa-home text-lg"></i>
@@ -1498,13 +1513,91 @@ function initializeMusicControl() {
     });
     
 </script>
-<button id="music-control-button" 
-    class="fixed z-[101] 
-           w-12 h-12 rounded-full shadow-lg 
-           bg-rose-gold text-white flex items-center justify-center 
-           transition duration-300 transform scale-100 hover:scale-105"
-    style="bottom: 80px; right: 1rem;">
-    <i id="music-icon" class="fas fa-volume-up text-lg"></i>
-</button>
+
+<script>
+    // FUNGSI UTAMA: MENGATUR SCROLL NAVIGASI DAN STATUS AKTIF
+    
+    // Fungsi untuk memusatkan item navigasi yang aktif
+    function centerActiveNavItem(itemId) {
+        const navContainer = document.getElementById('nav-container');
+        const activeItem = document.getElementById(`nav-${itemId}`);
+
+        if (!activeItem || !navContainer) return;
+
+        // Hitung posisi yang dibutuhkan untuk memusatkan item
+        // activeItem.offsetLeft: Jarak item dari awal scroll container
+        // navContainer.clientWidth: Lebar container yang terlihat
+        // activeItem.offsetWidth: Lebar item
+        const scrollPosition = 
+            activeItem.offsetLeft - 
+            (navContainer.clientWidth / 2) + 
+            (activeItem.offsetWidth / 2);
+
+        // Terapkan scroll secara halus
+        navContainer.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    }
+
+    // Fungsi untuk memperbarui status aktif pada navbar
+    function setActiveNavItem(targetId) {
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+            item.classList.remove('active-nav-item');
+        });
+
+        const activeNavItem = document.getElementById(`nav-${targetId}`);
+        if (activeNavItem) {
+            activeNavItem.classList.add('active-nav-item');
+            
+            // Panggil fungsi pemusatan saat status aktif diperbarui
+            centerActiveNavItem(targetId);
+        }
+    }
+
+    // Fungsi scroll bawaan saat menu diklik
+    function scrollToSection(event, targetId) {
+        event.preventDefault();
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth'
+            });
+            // Karena klik sudah terjadi, kita langsung set aktif dan auto-scroll
+            setActiveNavItem(targetId); 
+        }
+    }
+    
+    // Intersection Observer untuk memperbarui status aktif saat PAGE di-scroll
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('section[data-section]');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            // Pemicu aktif saat section berada 50% di viewport
+            threshold: 0.5 
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    setActiveNavItem(sectionId);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Atur item pertama menjadi aktif saat dimuat (untuk menghindari kondisi kosong)
+        setActiveNavItem('cover');
+    });
+
+</script>
 </body>
 </html>
