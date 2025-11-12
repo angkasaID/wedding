@@ -30,6 +30,8 @@
     --text-lg--line-height: calc(1.75 / 1.125);
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
+    --text-2xl: 1.5rem;
+    --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 1.875rem;
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
@@ -231,24 +233,6 @@
   .z-\[101\] {
     z-index: 101;
   }
-  .container {
-    width: 100%;
-    @media (width >= 40rem) {
-      max-width: 40rem;
-    }
-    @media (width >= 48rem) {
-      max-width: 48rem;
-    }
-    @media (width >= 64rem) {
-      max-width: 64rem;
-    }
-    @media (width >= 80rem) {
-      max-width: 80rem;
-    }
-    @media (width >= 96rem) {
-      max-width: 96rem;
-    }
-  }
   .mx-auto {
     margin-inline: auto;
   }
@@ -329,6 +313,9 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-\[90\%\] {
+    max-width: 90%;
   }
   .max-w-sm {
     max-width: var(--container-sm);
@@ -530,6 +517,10 @@
   .text-left {
     text-align: left;
   }
+  .text-2xl {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
   .text-3xl {
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
@@ -580,6 +571,9 @@
   }
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+  .text-\[\#d1b09b\] {
+    color: #d1b09b;
   }
   .text-gray-500 {
     color: var(--color-gray-500);
@@ -804,6 +798,13 @@ body {
   opacity: 0.9;
   width: 35%;
   pointer-events: none;
+}
+.music-card {
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .blur-card {
   background-color: rgba(255, 255, 255, 0.3);
