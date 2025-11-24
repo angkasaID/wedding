@@ -3,218 +3,213 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Link Undangan Generator</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Generator Undangan Pernikahan</title>
+
+    <!-- SEO & Social Share -->
+    <meta property="og:title" content="Undangan Pernikahan" />
+    <meta name="twitter:title" content="Undangan Pernikahan" />
+
+    <meta
+      name="description"
+      content="Undangan pernikahan. Klik untuk membuka undangan digital resmi."
+    />
+    <meta
+      property="og:description"
+      content="Undangan pernikahan. Kami menantikan kehadiran Anda."
+    />
+    <meta
+      name="twitter:description"
+      content="Undangan pernikahan. Klik untuk membuka undangan digital."
+    />
+
+    <meta
+      property="og:image"
+      content="https://domain-anda.com/images/cover.jpg"
+    />
+    <meta
+      name="twitter:image"
+      content="https://domain-anda.com/images/cover.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://domain-anda.com/" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#000000" />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome (for icons) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <!-- Google Font: Inter -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-
     <style>
+      :root {
+        --bg: #0d0d0d;
+        --fg: #e3e3e3;
+        --muted: #9ca3af;
+        --accent: #6366f1;
+      }
       body {
+        background: var(--bg);
+        color: var(--fg);
         font-family: "Inter", sans-serif;
-        background-color: #f4f7f9;
       }
-      .card {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      }
-      .btn-primary {
-        background-image: linear-gradient(to right, #d1b09b 0%, #b8987b 100%);
-        transition: transform 0.2s, opacity 0.2s;
-      }
-      .btn-primary:hover {
-        transform: scale(1.02);
-        opacity: 0.9;
-      }
-      .text-accent {
-        color: #d1b09b;
-      }
-
-      /* Utility untuk feedback */
-      .copy-feedback {
-        transition: opacity 0.3s ease-in-out;
+      .focus-ring:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
       }
     </style>
   </head>
-  <body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+  <body class="min-h-screen flex items-center justify-center p-6">
     <div
-      class="w-full max-w-lg card bg-white p-6 md:p-8 rounded-xl border-t-4 border-accent"
+      class="w-full max-w-2xl bg-[#111] border border-gray-800 rounded-2xl p-6 shadow-xl"
     >
-      <header class="text-center mb-8">
-        <i class="fas fa-link text-4xl text-accent mb-3"></i>
-        <h1 class="text-3xl font-bold text-gray-800">
-          Pembuat Tautan Undangan
-        </h1>
-        <p class="text-sm text-gray-500 mt-2">
-          Alat untuk membuat tautan undangan spesifik nama tamu.
-        </p>
-      </header>
+      <h1 class="text-2xl font-bold mb-6 text-center">
+        Generator Link Undangan Pernikahan
+      </h1>
 
-      <!-- Form Input -->
+      <!-- FORM INPUTS -->
       <div class="space-y-6">
-        <!-- Input URL Dasar -->
-        <div>
-          <label
-            for="base-url"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            1. URL Dasar (Alamat Undangan Anda)
-          </label>
-          <input
-            type="url"
-            id="base-url"
-            value="https://nama-proyek-anda.vercel.app/"
-            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
-            placeholder="Misal: https://angkasa-bintang.vercel.app/"
-          />
-          <p class="text-xs text-gray-500 mt-1">
-            Ganti dengan domain Anda yang sebenarnya.
-          </p>
-        </div>
-
         <!-- Input Nama Tamu -->
         <div>
-          <label
-            for="guest-name"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            2. Masukkan Nama Tamu (Satu per satu)
-          </label>
+          <label class="text-sm text-[color:var(--muted)]">1. Nama Tamu</label>
           <input
-            type="text"
             id="guest-name"
-            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
-            placeholder="Contoh: Keluarga Besar Budi Wijaya"
+            type="text"
+            placeholder="Contoh: Andi Pratama"
+            class="mt-2 w-full p-3 bg-transparent border border-gray-700 rounded-lg focus-ring"
           />
         </div>
 
-        <!-- Tombol Generate -->
-        <button
-          id="generate-button"
-          class="btn-primary w-full text-white font-semibold py-3 rounded-lg shadow-md transition duration-300"
-        >
-          <i class="fas fa-magic mr-2"></i> Buat Tautan Undangan
-        </button>
-      </div>
+        <!-- Slug URL -->
+        <div>
+          <label class="text-sm text-[color:var(--muted)]">2. Slug URL</label>
+          <input
+            id="slug"
+            type="text"
+            placeholder="Contoh: wedding-budi-sari"
+            class="mt-2 w-full p-3 bg-transparent border border-gray-700 rounded-lg focus-ring"
+          />
+        </div>
 
-      <!-- Hasil -->
-      <div
-        id="result-container"
-        class="mt-8 pt-6 border-t border-gray-200 hidden"
-      >
-        <h2 class="text-lg font-semibold text-gray-800 mb-3">
-          Tautan Siap Disalin:
-        </h2>
-
-        <div class="bg-gray-50 p-4 rounded-lg flex flex-col space-y-3">
-          <!-- Tautan yang Dihasilkan -->
-          <textarea
-            id="generated-link"
-            readonly
-            rows="3"
-            class="w-full text-sm text-blue-700 bg-transparent border-none focus:ring-0 resize-none overflow-hidden"
-            placeholder="Tautan akan muncul di sini..."
-          ></textarea>
-
-          <!-- Tombol Salin -->
-          <button
-            id="copy-button"
-            class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+        <!-- Nama Mempelai -->
+        <div>
+          <label class="text-sm text-[color:var(--muted)]"
+            >3. Nama Mempelai</label
           >
-            <i class="fas fa-copy mr-2"></i> Salin Tautan
-          </button>
-
-          <!-- Feedback Salin -->
-          <p
-            id="copy-feedback"
-            class="text-sm text-green-600 text-center copy-feedback opacity-0"
-          >
-            <i class="fas fa-check-circle mr-1"></i> Tautan berhasil disalin ke
-            clipboard!
+          <input
+            id="bride-groom"
+            type="text"
+            placeholder="Contoh: Budi & Sari"
+            class="mt-2 w-full p-3 bg-transparent border border-gray-700 rounded-lg focus-ring"
+          />
+          <p class="text-xs mt-1 text-[color:var(--muted)]">
+            Nama ini muncul di pesan WA & metadata SEO.
           </p>
         </div>
+
+        <!-- Template Pesan -->
+        <div>
+          <label class="text-sm text-[color:var(--muted)]"
+            >4. Template Pesan WhatsApp</label
+          >
+          <textarea
+            id="wa-template"
+            rows="6"
+            class="mt-2 w-full p-3 bg-transparent border border-gray-700 rounded-lg focus-ring"
+          >
+Assalamualaikum / Halo *{NAME}* 🤍
+
+Dengan penuh kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami *{COUPLE}*.
+
+Silakan buka undangan digital pada tautan berikut:
+{LINK}
+
+Mohon konfirmasi kehadiran. Terima kasih atas doa & perhatiannya. 🙏✨
+— {COUPLE}</textarea
+          >
+        </div>
+
+        <!-- Generate Button -->
+        <button
+          onclick="generateLink()"
+          class="w-full py-3 rounded-lg bg-[color:var(--accent)] text-white font-semibold hover:bg-indigo-500 transition"
+        >
+          Generate Link
+        </button>
+
+        <!-- Output Link -->
+        <div
+          id="output"
+          class="hidden mt-6 p-4 border border-gray-700 rounded-xl bg-black/40"
+        ></div>
       </div>
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const baseUrlInput = document.getElementById("base-url");
-        const guestNameInput = document.getElementById("guest-name");
-        const generateButton = document.getElementById("generate-button");
-        const resultContainer = document.getElementById("result-container");
-        const generatedLink = document.getElementById("generated-link");
-        const copyButton = document.getElementById("copy-button");
-        const copyFeedback = document.getElementById("copy-feedback");
+      function buildMessage(template, name, link, couple) {
+        return template
+          .replaceAll("{NAME}", name)
+          .replaceAll("{LINK}", link)
+          .replaceAll("{COUPLE}", couple || "");
+      }
 
-        // Set placeholder untuk URL dasar jika belum ada (Opsional: gunakan localStorage)
-        if (!baseUrlInput.value) {
-          baseUrlInput.value = "https://angkasa-bintang.vercel.app/";
-        }
+      function updateMeta(name) {
+        const tags = {
+          "og:title": `Undangan Pernikahan ${name}`,
+          "twitter:title": `Undangan Pernikahan ${name}`,
+          description: `Undangan pernikahan ${name}. Klik untuk membuka undangan digital resmi.`,
+          "og:description": `Undangan pernikahan ${name}. Kami menantikan kehadiran Anda.`,
+          "twitter:description": `Undangan pernikahan ${name}. Klik untuk membuka undangan digital.`,
+        };
 
-        // Fungsi utama untuk membuat tautan
-        function generateLink() {
-          const baseUrl = baseUrlInput.value.trim().replace(/\/+$/, ""); // Hapus trailing slash
-          const guestName = guestNameInput.value.trim();
-
-          if (!baseUrl || !guestName) {
-            generatedLink.value = "Mohon isi URL Dasar dan Nama Tamu.";
-            resultContainer.classList.remove("hidden");
-            return;
-          }
-
-          // 1. URL Encoding Nama Tamu
-          // encodeURIComponent akan mengubah spasi menjadi %20, dan mengamankan karakter khusus lainnya.
-          const encodedName = encodeURIComponent(guestName);
-
-          // 2. Gabungkan menjadi Tautan Final
-          // Kita gunakan parameter 'to' sesuai dengan logika yang kita buat di file index.html
-          const finalLink = `${baseUrl}/?to=${encodedName}`;
-
-          // Tampilkan hasil
-          generatedLink.value = finalLink;
-          resultContainer.classList.remove("hidden");
-
-          // Reset feedback salin
-          copyFeedback.classList.add("opacity-0");
-        }
-
-        // Listener tombol Generate
-        generateButton.addEventListener("click", generateLink);
-        guestNameInput.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            generateLink();
-          }
+        Object.entries(tags).forEach(([key, val]) => {
+          let meta = document.querySelector(
+            `meta[property="${key}"], meta[name="${key}"]`
+          );
+          if (meta) meta.content = val;
         });
+      }
 
-        // Listener tombol Copy
-        copyButton.addEventListener("click", () => {
-          // Pilih teks di textarea
-          generatedLink.select();
-          generatedLink.setSelectionRange(0, 99999); // Untuk perangkat mobile
-
-          // Gunakan document.execCommand untuk kompatibilitas iframe
-          try {
-            document.execCommand("copy");
-
-            // Feedback visual
-            copyFeedback.classList.remove("opacity-0");
-            setTimeout(() => {
-              copyFeedback.classList.add("opacity-0");
-            }, 2500);
-          } catch (err) {
-            alert("Gagal menyalin tautan. Silakan salin manual.");
-            console.error("Copy command failed:", err);
-          }
-        });
+      document.getElementById("bride-groom").addEventListener("input", (e) => {
+        updateMeta(e.target.value);
       });
+
+      function generateLink() {
+        const guest = document.getElementById("guest-name").value.trim();
+        const slug = document.getElementById("slug").value.trim();
+        const couple = document.getElementById("bride-groom").value.trim();
+        const template = document.getElementById("wa-template").value;
+
+        if (!guest || !slug) return alert("Nama tamu dan slug wajib diisi.");
+
+        const finalLink = `https://wedding.aethersub.store/${slug}?to=${encodeURIComponent(
+          guest
+        )}`;
+        const waMsg = buildMessage(template, guest, finalLink, couple);
+
+        document.getElementById("output").classList.remove("hidden");
+        document.getElementById("output").innerHTML = `
+      <p class='font-semibold'>Link Undangan:</p>
+      <div class='flex items-center gap-2 mt-2'>
+        <input id='generated-link' class='w-full p-2 bg-transparent border border-gray-700 rounded-lg text-sm' value='${finalLink}' />
+        <button onclick="copyText('generated-link')" class='px-3 py-2 bg-gray-700 rounded-lg text-sm'>Copy</button>
+      </div>
+      <button onclick="shareWA()" class='mt-3 w-full py-2 bg-green-600 rounded-lg text-white'>Share via WhatsApp</button>
+
+      <p class='mt-4 font-semibold'>Pesan WhatsApp:</p>
+      <textarea id='generated-wa' rows='6' class='mt-2 w-full p-3 bg-transparent border border-gray-700 rounded-lg'>${waMsg}</textarea>
+      <button onclick="copyText('generated-wa')" class='mt-2 px-3 py-2 bg-gray-700 rounded-lg text-sm'>Copy Pesan</button>
+    `;
+      }
+
+      function copyText(id) {
+        const el = document.getElementById(id);
+        el.select();
+        document.execCommand("copy");
+        alert("Copied!");
+      }
+
+      function shareWA() {
+        const msg = encodeURIComponent(
+          document.getElementById("generated-wa").value
+        );
+        window.open(`https://wa.me/?text=${msg}`);
+      }
     </script>
   </body>
 </html>
